@@ -17,6 +17,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.ProgressMonitor;
 import javax.swing.SwingUtilities;
+import jdk.nashorn.internal.ir.ContinueNode;
 
 /**
  *
@@ -31,6 +32,8 @@ public class NewJFrame extends javax.swing.JFrame {
      */
     public NewJFrame() {
         initComponents();
+        DefaultListModel model=new DefaultListModel();
+        jList1.setModel(model);
     }
 
     /**
@@ -101,7 +104,19 @@ public class NewJFrame extends javax.swing.JFrame {
         try {
             jButton1.setEnabled(false);
             //從 combobox 抓出被選到的項目，存到變數裡
-            String selectedItem="";
+            DefaultListModel model=(DefaultListModel) jList1.getModel();
+            model.addElement(jComboBox1.getSelectedItem());
+            jList1.updateUI();
+            jList1.updateUI();
+      
+            String value=jTextField1.getText();
+            model = (DefaultListModel)jList1.getModel();
+            model.addElement(value);
+            
+           
+            
+        jList1.updateUI();
+            String selectedItem = null;
             /////////////////////////////////////
             URL url = new URL(selectedItem);
             String fileName = url.getFile();
@@ -118,20 +133,29 @@ public class NewJFrame extends javax.swing.JFrame {
                         progress.setVisible(false);
                         jButton1.setEnabled(true);
                         //將下載好的項目加入到 jList 裡面
-                        
+                        String value=jTextField1.getText();
+                        jList1.updateUI();
                         ////////////////////////////
                         SwingUtilities.invokeLater(new Runnable() {
                             @Override
                             public void run() {
                                 try {
                                     URL fileURL=tempFile.toURI().toURL();
+                                    new NewJFrame().setVisible(true);
                                     //利用 fileURL 將 image icon 加到 jLabel2
                                     ////////////////////////////////////////
-                                    jList1.updateUI();
-                                } catch (Exception ex) {
+                                    ImageIcon icon;
+                                    icon = new ImageIcon(fileURL(
+                                            "https://mbtskoudsalg.com/images/png-image-7.png","http://pngimg.com/uploads/eagle/eagle_PNG1227.png","https://upload.wikimedia.org/wikipedia/commons/4/4a/Photographer_Barnstar.png","http://pluspng.com/img-png/bulb-hd-png-light-bulb-png-transparent-image-2048.png"));
+                                    jLabel2.update(getGraphics());
+                                } catch (MalformedURLException ex) {
                                     Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 
+                            }
+
+                            private String fileURL(String httpsmbtskoudsalgcomimagespngimage7png, String httppngimgcomuploadseagleeagle_PNG1227png, String httpsuploadwikimediaorgwikipediacommons44, String httppluspngcomimgpngbulbhdpnglightbulbpng) {
+                                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                             }
                         });
                     } else if (failed) {
